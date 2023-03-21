@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Action {
+  id         Int      @id @default(autoincrement())
+  type       String   @db.VarChar(20)
+  value      Int      @default(0)
+  round_id   Int
+  player_id  Int
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  players    Player  @relation(fields: [player_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rounds     Round   @relation(fields: [round_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("actions")
+}
+
+model Game {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(255)
+  description String?
+  status      String    @default("created") @db.VarChar(20)
+  created_by  Int
+  created_at  DateTime  @default(now()) @db.Timestamp(6)
+  updated_at  DateTime  @default(now()) @db.Timestamp(6)
+  users       User     @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  players     Player[]
+  rounds      Round[]
+
+  @@map("games")
+
+}
+
+model Player {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(255)
+  chips      Int       @default(0)
+  status     String    @default("active") @db.VarChar(20)
+  user_id    Int?
+  game_id    Int
+  created_at DateTime  @default(now()) @db.Timestamp(6)
+  updated_at DateTime  @default(now()) @db.Timestamp(6)
+  actions    Action[]
+  games      Game     @relation(fields: [game_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users      User?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("players")
+
+}
+
+model Round {
+  id         Int       @id @default(autoincrement())
+  number     Int
+  status     String    @default("open") @db.VarChar(20)
+  game_id    Int
+  created_at DateTime  @default(now()) @db.Timestamp(6)
+  updated_at DateTime  @default(now()) @db.Timestamp(6)
+  actions    Action[]
+  games      Game     @relation(fields: [game_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("rounds")
+  
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(255)
+  email      String    @unique @db.VarChar(255)
+  password   String    @db.VarChar(255)
+  created_at DateTime  @default(now()) @db.Timestamp(6)
+  updated_at DateTime  @default(now()) @db.Timestamp(6)
+  games      Game[]
+  players    Player[]
+
+  @@map("users")
+
+}
