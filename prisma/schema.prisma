@@ -26,14 +26,39 @@ model Game {
   name        String    @db.VarChar(255)
   description String?
   status      String    @default("created") @db.VarChar(20)
-  created_by  Int
   created_at  DateTime  @default(now()) @db.Timestamp(6)
   updated_at  DateTime  @default(now()) @db.Timestamp(6)
-  users       User     @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
   players     Player[]
   rounds      Round[]
 
   @@map("games")
+
+}
+
+model Format {
+  id          Int       @id @default(autoincrement())
+  name        String    @default("created") @db.VarChar(20)
+  description String?
+  created_at  DateTime  @default(now()) @db.Timestamp(6)
+  updated_at  DateTime  @default(now()) @db.Timestamp(6)
+  rooms       Room[]
+  @@map("formats")
+
+}
+
+model Room {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(255)
+  status      String    @default("open") @db.VarChar(20)
+  format_id   Int
+  buyin       Int
+  created_by  Int
+  created_at  DateTime  @default(now()) @db.Timestamp(6)
+  updated_at  DateTime  @default(now()) @db.Timestamp(6)
+  formats     Format  @relation(fields: [format_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users       User     @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("rooms")
 
 }
 
@@ -75,7 +100,7 @@ model User {
   password   String    @db.VarChar(255)
   created_at DateTime  @default(now()) @db.Timestamp(6)
   updated_at DateTime  @default(now()) @db.Timestamp(6)
-  games      Game[]
+  rooms       Room[]
   players    Player[]
 
   @@map("users")
