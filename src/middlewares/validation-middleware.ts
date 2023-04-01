@@ -16,14 +16,11 @@ export function validateParams<T>(
 
 function validate(schema: ObjectSchema, type: "body" | "params") {
   return (req: Request, res: Response, next: NextFunction) => {
-    console.log("entrou no validate");
-
     const { error } = schema.validate(req[type], {
       abortEarly: false,
     });
 
     if (!error) {
-      console.log("entrou no if do validate");
       next();
     } else {
       res

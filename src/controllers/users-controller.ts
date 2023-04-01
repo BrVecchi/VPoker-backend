@@ -5,11 +5,9 @@ import userService from "../services/users-service";
 
 export async function usersPost(req: Request, res: Response) {
   const { name, email, password } = req.body;
-  console.log("entrou no userPost");
 
   try {
     const user = await userService.createUser({ name, email, password });
-    console.log("passou do createUser");
 
     return res.status(httpStatus.CREATED).json({
       id: user.id,

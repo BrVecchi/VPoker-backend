@@ -10,10 +10,7 @@ export async function createUser({
   email,
   password,
 }: CreateUserParams): Promise<User> {
-  console.log("entrou no createUser");
-
   await validateUniqueEmailOrFail(email);
-  console.log("passou do validateEmail");
 
   const hashedPassword = await bcrypt.hash(password, 12);
   return userRepository.create({
