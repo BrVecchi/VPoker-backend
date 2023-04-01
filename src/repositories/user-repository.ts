@@ -4,7 +4,6 @@ import { prisma } from "../config";
 
 async function create(data: Prisma.UserUncheckedCreateInput) {
   return prisma.user.create({
-    //name-email-password
     data,
   });
 }

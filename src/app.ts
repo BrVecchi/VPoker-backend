@@ -3,12 +3,19 @@ import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
 
 import { connectDb, disconnectDB, loadEnv } from "./config";
+import { handleApplicationErrors } from "./middlewares/error-handling-middleware";
+import { authenticationRouter } from "./routers/authentication-router";
+import { usersRouter } from "./routers/users-router";
 
 loadEnv();
 
 const app = express();
-app.use(express.json());
-app.use(cors());
+app
+  .use(express.json())
+  .use(cors())
+  .use("/users", usersRouter)
+  .use("/auth", authenticationRouter)
+  .use(handleApplicationErrors);
 
 app.get("/health", (_req: Request, res: Response) => res.send("ok"));
 
