@@ -1,6 +1,6 @@
-import Joi from "joi";
+import Joi from 'joi';
 
-import { SignInParams } from "../services/authentication-service";
+import { SignInParams } from '../services/authentication-service';
 
 export const signInSchema = Joi.object<SignInParams>({
   email: Joi.string().email().required(),

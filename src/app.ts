@@ -5,6 +5,7 @@ import express, { Express, Request, Response } from "express";
 import { connectDb, disconnectDB, loadEnv } from "./config";
 import { handleApplicationErrors } from "./middlewares/error-handling-middleware";
 import { authenticationRouter } from "./routers/authentication-router";
+import { roomsRouter } from "./routers/rooms-router";
 import { usersRouter } from "./routers/users-router";
 
 loadEnv();
@@ -15,6 +16,7 @@ app
   .use(cors())
   .use("/users", usersRouter)
   .use("/auth", authenticationRouter)
+  .use("/rooms", roomsRouter)
   .use(handleApplicationErrors);
 
 app.get("/health", (_req: Request, res: Response) => res.send("ok"));

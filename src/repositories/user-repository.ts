@@ -1,6 +1,6 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from '@prisma/client';
 
-import { prisma } from "../config";
+import { prisma } from '../config';
 
 async function create(data: Prisma.UserUncheckedCreateInput) {
   return prisma.user.create({
