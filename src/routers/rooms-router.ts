@@ -8,8 +8,8 @@ import { roomSchema } from '../schemas/room-schemas';
 const roomsRouter = Router();
 
 roomsRouter
-  .all("/*", authenticateToken)
   .get("/", getRooms)
+  .all("/*", authenticateToken)
   .post("/", validateBody(roomSchema), postRoom);
 
 export { roomsRouter };
