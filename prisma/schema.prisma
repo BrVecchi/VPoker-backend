@@ -55,8 +55,9 @@ model Room {
   created_by  Int
   created_at  DateTime  @default(now()) @db.Timestamp(6)
   updated_at  DateTime  @default(now()) @db.Timestamp(6)
-  formats     Format  @relation(fields: [format_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users       User     @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  players     Player[]
+  formats     Format    @relation(fields: [format_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users       User      @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("rooms")
 
@@ -69,11 +70,13 @@ model Player {
   status     String    @default("active") @db.VarChar(20)
   user_id    Int?
   game_id    Int
+  room_id    Int
   created_at DateTime  @default(now()) @db.Timestamp(6)
   updated_at DateTime  @default(now()) @db.Timestamp(6)
   actions    Action[]
   games      Game     @relation(fields: [game_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   users      User?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rooms      Room     @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("players")
 
