@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
+    "build": "tsc",
+    "start": "npm run prisma:migrate:deploy && node dist/src/server.js",
     "dev": "cross-env NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prisma:seed": "npx prisma db seed",
-    "migration:dev": "npx prisma migrate dev"
+    "prisma:seed": "prisma db seed",
+    "migrate:dev": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
