@@ -5,6 +5,7 @@ import express, { Express, Request, Response } from "express";
 import { connectDb, disconnectDB, loadEnv } from "./config";
 import { handleApplicationErrors } from "./middlewares/error-handling-middleware";
 import { authenticationRouter } from "./routers/authentication-router";
+import { formatsRouter } from "./routers/formats-router";
 import { roomsRouter } from "./routers/rooms-router";
 import { usersRouter } from "./routers/users-router";
 
@@ -17,6 +18,7 @@ app
   .use("/users", usersRouter)
   .use("/auth", authenticationRouter)
   .use("/rooms", roomsRouter)
+  .use("/formats", formatsRouter)
   .use(handleApplicationErrors);
 
 app.get("/health", (_req: Request, res: Response) => res.send("ok"));
